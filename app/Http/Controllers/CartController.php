@@ -2,25 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreCartRequest;
+use App\Services\CartService;
 
 class CartController extends Controller
 {
+    protected $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Cart::with('products')->get();
+        return response()->json($this->cartService->getAllCarts());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCartRequest $request)
     {
-        //
+        $cart = $this->cartService->createCart($request->validated());
+        return response()->json(["message" => "Cart created.", "product" => $cart], 201);
     }
 
     /**
@@ -28,22 +36,7 @@ class CartController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $cart = $this->cartService->getCartById($id);
+        return response()->json($cart, 201);
     }
 }
