@@ -3,7 +3,7 @@
 ## Table of Contents
 
 -   [Table of Contents](#table-of-contents)
--   [Project Overview](#laravel-shopping-cart-api)
+-   [Project Overview](#project-overview)
 -   [Features](#features)
 -   [Tech Stack](#tech-stack)
 -   [Installation](#installation)
@@ -14,7 +14,7 @@
 -   [Contributing](#contributing)
 -   [License](#license)
 
-**Project Overview**
+## Project Overview
 
 This project implements a shopping cart functionality for a shopping system using Laravel. It is designed as a RESTful API that follows the Service Repository pattern, ensuring a clean architecture and separation of concerns. The API allows users to manage their shopping carts, including adding products, viewing cart contents, and checking out.
 
