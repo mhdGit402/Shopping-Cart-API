@@ -1,66 +1,224 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Shopping Cart API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Project Overview**
 
-## About Laravel
+This project implements a shopping cart functionality for a shopping system using Laravel. It is designed as a RESTful API that follows the Service Repository pattern, ensuring a clean architecture and separation of concerns. The API allows users to manage their shopping carts, including adding products, viewing cart contents, and checking out.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   **User Authentication**: Users can register and log in to manage their carts.
+-   **Cart Management**: Users can create, update, and delete carts.
+-   **Product Management**: Users can add products to their carts and view the cart contents.
+-   **Checkout Process**: Users can proceed to checkout, providing necessary details for order processing.
+-   **RESTful API**: All functionalities are accessible via a RESTful API.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tech Stack
 
-## Learning Laravel
+**Laravel:** PHP framework for building the API.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Eloquent ORM:** For database interactions.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**Service Repository Pattern:** To separate business logic from data access logic.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**MySQL:** Database for storing user and cart data.
 
-## Laravel Sponsors
+## Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Prerequisites
 
-### Premium Partners
+-   PHP 7.4 or higher
+-   Composer
+-   MySQL
+-   Laravel Installer
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Steps to Install
+
+1- **Clone the Repository**:
+
+```bash
+git clone https://github.com/mhdGit402/Shopping-Cart-API.git
+cd laravel-shopping-cart-api
+```
+
+2- **Install Dependencies**:
+
+```bash
+composer install
+```
+
+3- **Set Up Environment**:
+
+-   Copy the `.env.example` file to `.env`
+
+```bash
+cp .env.example .env
+```
+
+-   Update the `.env` file with your database credentials:
+
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
+4- **Generate Application Key**:
+
+```bash
+php artisan key:generate
+```
+
+5- **Run Migrations**:
+
+```bash
+php artisan migrate
+```
+
+6- **Seed the Database (Optional)**:
+
+If you want to populate the database with sample data, run:
+
+```bash
+php artisan db:seed
+```
+
+7- **Start the Development Server**:
+
+```bash
+php artisan serve
+```
+
+The application will be available at `http://127.0.0.1:8000`.
+
+## API Reference
+
+#### **User Management**
+
+**1- Create User**
+
+-   **Endpoint**: `POST/user`
+-   **Description**: Creates a new user in the system.
+-   **Request Body**:
+
+```bash
+{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "securepassword"
+}
+```
+
+-   **Response**:
+    -   **201 Created**: Returns the created user object with API token.
+    -   **400 Bad Request**: If validation fails.
+
+**2- Get User Token**
+
+-   **Endpoint**: `GET/user/{email}`
+-   **Description**: Retrieves the API token for a specific user.
+-   **Authorization**: Requires `view tokens` permission.
+
+-   **Response**:
+    -   **200 OK**: Returns the user's API token.
+    -   **403 Forbidden**: If the user does not have permission.
+
+#### **Product Management**
+
+**1- Resource Routes for Products**
+
+-   **Endpoint**: `/product`
+-   **Description**: Retrieves the API token for a specific user.
+-   **Methods**:
+
+    -   `GET /product`: List all products.
+    -   `POST /product`: Create a new product.
+    -   `GET /product/{id}`: Retrieve a specific product.
+
+-   **Response**:
+    -   **200 OK**: Returns the product data.
+    -   **201 Created**: Returns the created product data.
+    -   **404 Not Found**: If the product does not exist.
+
+#### **Shopping Cart Management**
+
+**1- View All Carts**
+
+-   **Endpoint**: `GET /cart`
+-   **Description**: Lists all carts.
+-   **Authorization**: Requires `view all carts` permission
+
+-   **Response**:
+    -   **200 OK**: Returns an array of carts.
+    -   **403 Forbidden**: If the user does not have permission.
+
+**2- Get Specific Cart**
+
+-   **Endpoint**: `GET /cart/{id}`
+-   **Description**: Retrieves a specific cart by ID.
+
+-   **Response**:
+    -   **200 OK**: Returns the cart data.
+    -   **404 Not Found**: If the cart does not exist.
+
+**3- Add to Cart**
+
+-   **Endpoint**: `POST /cart/add`
+-   **Description**: Adds a product to the user's cart.
+-   **Request Body**:
+
+```bash
+{
+    "product_id": 1,
+    "quantity": 2
+}
+```
+
+-   **Response**:
+    -   **200 OK**: Returns the updated cart.
+    -   **404 Not Found**: If the product does not exist.
+
+**4- Remove from Cart**
+
+-   **Endpoint**: `DELETE /cart/remove`
+-   **Description**: Removes a product from the user's cart.
+-   **Request Body**:
+
+```bash
+{
+    "product_id": 1
+}
+```
+
+-   **Response**:
+    -   **200 OK**: Returns the updated cart.
+    -   **404 Not Found**: If the product does not exist in the cart.
+
+## Service Repository Pattern
+
+This project utilizes the Service Repository pattern to separate the business logic from the data access logic. Each service handles the business rules, while the repository manages the data interactions with the database.
+
+**Directory Structure**
+
+-   **app/Models**: Contains Eloquent models.
+-   **app/Repositories**: Contains repository classes for data access.
+-   **app/Services**: Contains service classes for business logic.
+-   **app/Http/Controllers**: Contains API controllers.
+
+## Testing
+
+To run the tests, use the following command:
+
+```bash
+php artisan test
+```
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License. See the LICENSE file for details.
