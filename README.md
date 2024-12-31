@@ -1,3 +1,5 @@
+# Laravel Shopping Cart API
+
 ## Table of Contents
 
 -   [Table of Contents](#table-of-contents)
@@ -11,8 +13,6 @@
 -   [Testing](#testing)
 -   [Contributing](#contributing)
 -   [License](#license)
-
-# Laravel Shopping Cart API
 
 **Project Overview**
 
