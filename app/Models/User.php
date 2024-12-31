@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -35,7 +35,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
@@ -44,7 +44,12 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function carts()
+    /**
+     * Get the carts associated with the user.
+     *
+     * @return HasMany
+     */
+    public function carts(): HasMany
     {
         return $this->hasMany(Cart::class);
     }

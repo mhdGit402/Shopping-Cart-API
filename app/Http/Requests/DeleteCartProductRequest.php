@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCartRequest extends FormRequest
+class DeleteCartProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id', // User ID is required and must exist in the users table
+            'product_id' => 'required|exists:products,id', // Product ID is required and must exist in the products table
         ];
     }
 
@@ -36,8 +36,8 @@ class StoreCartRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'user_id.required' => 'The user ID is required.',
-            'user_id.exists' => 'The selected user ID is invalid.',
+            'product_id.required' => 'The product ID is required.',
+            'product_id.exists' => 'The selected product ID does not exist in our records.',
         ];
     }
 }

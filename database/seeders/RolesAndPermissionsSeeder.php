@@ -23,6 +23,8 @@ class RolesAndPermissionsSeeder extends Seeder
                 'edit cart',
                 'delete cart',
                 'view cart',
+                'view all carts',
+                'view tokens'
             ];
 
             foreach ($permissions as $permission) {
@@ -34,7 +36,7 @@ class RolesAndPermissionsSeeder extends Seeder
             $adminRole->syncPermissions($permissions); // Assign all permissions to admin
 
             $maintainerRole = Role::firstOrCreate(['name' => 'maintainer']);
-            $maintainerRole->syncPermissions(['create product', 'edit product', 'view product', 'view cart']);
+            $maintainerRole->syncPermissions(['create product', 'edit product', 'view product', 'view cart', 'view all carts', 'view tokens']);
 
             $userRole = Role::firstOrCreate(['name' => 'user']);
             $userRole->syncPermissions(['view product', 'view cart', 'delete cart']);
