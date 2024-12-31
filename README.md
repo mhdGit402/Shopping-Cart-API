@@ -1,3 +1,17 @@
+## Table of Contents
+
+-   [Table of Contents](#table-of-contents)
+-   [Project Overview](#laravel-shopping-cart-api)
+-   [Features](#features)
+-   [Tech Stack](#tech-stack)
+-   [Installation](#installation)
+-   [API Reference](#api-reference)
+-   [Service Repository Pattern](#service-repository-pattern)
+-   [Directory Structure](#directory-structure)
+-   [Testing](#testing)
+-   [Contributing](#contributing)
+-   [License](#license)
+
 # Laravel Shopping Cart API
 
 **Project Overview**
