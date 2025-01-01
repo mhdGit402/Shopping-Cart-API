@@ -20,6 +20,7 @@ class CartFactory extends Factory
         $user = User::pluck("id");
         return [
             'user_id' => $user->random(),
+            'checkout' => $this->faker->numberBetween(0, 1)
         ];
     }
 }

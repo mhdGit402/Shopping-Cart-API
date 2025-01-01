@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id(); // Primary key
             $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // Foreign key referencing users
+            $table->smallInteger('checkout')->default(0); // checkout status
             $table->timestamps(); // Created at and updated at timestamps
         });
     }

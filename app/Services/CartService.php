@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Cart;
 use App\Repositories\Cart\CartRepositoryInterface;
 
 class CartService
@@ -19,7 +20,7 @@ class CartService
     /**
      * Retrieve all carts.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
     public function getAllCarts()
     {
@@ -30,7 +31,7 @@ class CartService
      * Retrieve a specific cart by its ID.
      *
      * @param int $id
-     * @return \App\Models\Cart|null
+     * @return Cart|null
      */
     public function getCartById(int $id)
     {
@@ -43,7 +44,7 @@ class CartService
      * @param int $userId
      * @param int $productId
      * @param int $quantity
-     * @return \App\Models\CartProduct
+     * @return CartProduct
      */
     public function addToCart(int $userId, int $productId, int $quantity)
     {
@@ -71,5 +72,23 @@ class CartService
             $cart->id,
             $productId
         );
+    }
+
+    /**
+     * Finalizes the checkout process for the specified user's cart.
+     *
+     * This method retrieves the cart associated with the given user ID
+     * and processes the checkout. It returns the updated cart instance.
+     *
+     * @param int $userId The ID of the user whose cart is being checked out.
+     * @return Cart The updated cart instance after checkout.
+     * @throws ModelNotFoundException If the cart for the specified user does not exist.
+     */
+    public function checkoutCart(int $userId): Cart
+    {
+        // Retrieve and checkout the user's cart
+        $cart = $this->cartRepository->checkout($userId);
+
+        return $cart;
     }
 }
