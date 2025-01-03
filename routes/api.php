@@ -13,6 +13,26 @@ use Illuminate\Support\Facades\Route;
 Route::post('user', [UserController::class, 'store']);
 
 /**
+ * Product-related routes.
+ */
+Route::prefix('product')->group(function () {
+    /**
+     * Retrieve a list of products.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    Route::get('/', [ProductController::class, 'index']);
+
+    /**
+     * Show a specific product.
+     *
+     * @param int $cart The ID of the product.
+     * @return \Illuminate\Http\Response
+     */
+    Route::get('{cart}', [ProductController::class, 'show']);
+});
+
+/**
  * Group routes that require authentication.
  */
 Route::middleware('auth:sanctum')->group(function () {
@@ -36,26 +56,11 @@ Route::middleware('auth:sanctum')->group(function () {
      */
     Route::prefix('product')->group(function () {
         /**
-         * Retrieve a list of products.
-         *
-         * @return \Illuminate\Http\Response
-         */
-        Route::get('/', [ProductController::class, 'index']);
-
-        /**
-         * Show a specific product.
-         *
-         * @param int $cart The ID of the product.
-         * @return \Illuminate\Http\Response
-         */
-        Route::get('{cart}', [ProductController::class, 'show']);
-
-        /**
          * Store a new product.
          *
          * @return \Illuminate\Http\Response
          */
-        Route::post('store', [ProductController::class, 'store'])
+        Route::post('/', [ProductController::class, 'store'])
             ->middleware('permission:create product');
     });
 
