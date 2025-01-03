@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCartProductRequest;
 use App\Http\Requests\DeleteCartProductRequest;
-use App\Http\Requests\StoreCartRequest;
-use App\Http\Requests\StoreCheckoutCartRequest;
 use App\Services\CartService;
 use Illuminate\Http\JsonResponse;
 
@@ -100,7 +98,7 @@ class CartController extends Controller
      * and the updated cart data. If the checkout fails, it returns an error message.
      *
      * @return JsonResponse A JSON response indicating the result of the checkout process.
-     * @throws \Illuminate\Auth\AuthenticationException If the user is not authenticated.
+     * @throws AuthenticationException If the user is not authenticated.
      */
     public function checkoutCart(): JsonResponse
     {

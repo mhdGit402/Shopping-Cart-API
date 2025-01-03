@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Repositories\Cart\CartRepositoryInterface;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\Eloquent\Collection;
 
 class CartService
 {
@@ -11,6 +14,8 @@ class CartService
 
     /**
      * Inject the CartRepository dependency.
+     *
+     * @param CartRepositoryInterface $cartRepository
      */
     public function __construct(CartRepositoryInterface $cartRepository)
     {
@@ -20,9 +25,9 @@ class CartService
     /**
      * Retrieve all carts.
      *
-     * @return Collection
+     * @return Collection|Cart[] A collection of all carts.
      */
-    public function getAllCarts()
+    public function getAllCarts(): Collection
     {
         return $this->cartRepository->all();
     }
@@ -30,65 +35,93 @@ class CartService
     /**
      * Retrieve a specific cart by its ID.
      *
-     * @param int $id
-     * @return Cart|null
+     * @param int $id The ID of the cart to retrieve.
+     * @return Cart|null The cart instance or null if not found.
+     * @throws AuthorizationException If the user is not authorized to view the cart.
      */
-    public function getCartById(int $id)
+    public function getCartById(int $id): ?Cart
     {
-        return $this->cartRepository->find($id);
+        $cart = $this->cartRepository->find($id);
+
+        // Authorization check
+        $this->authorize('viewCart', $cart);
+
+        return $cart;
     }
 
     /**
      * Add a product to the user's cart.
      *
-     * @param int $userId
-     * @param int $productId
-     * @param int $quantity
-     * @return CartProduct
+     * @param int $userId The ID of the user.
+     * @param int $productId The ID of the product to add.
+     * @param int $quantity The quantity of the product to add.
+     * @return mixed The cart product instance after addition.
+     * @throws AuthorizationException If the user is not authorized to update the cart.
      */
     public function addToCart(int $userId, int $productId, int $quantity)
     {
         $cart = $this->cartRepository->getUserCart($userId);
 
-        return $this->cartRepository->addProductToCart(
-            $cart->id,
-            $productId,
-            $quantity
-        );
+        // Authorization check
+        $this->authorize('updateCart', $cart);
+
+        return $this->cartRepository->addProductToCart($cart->id, $productId, $quantity);
     }
 
     /**
      * Remove a product from the user's cart.
      *
-     * @param int $userId
-     * @param int $productId
-     * @return bool|string
+     * @param int $userId The ID of the user.
+     * @param int $productId The ID of the product to remove.
+     * @return bool True if the product was removed, false otherwise.
+     * @throws AuthorizationException If the user is not authorized to update the cart.
      */
-    public function removeFromCart(int $userId, int $productId)
+    public function removeFromCart(int $userId, int $productId): bool
     {
         $cart = $this->cartRepository->getUserCart($userId);
 
-        return $this->cartRepository->removeProductFromCart(
-            $cart->id,
-            $productId
-        );
+        // Authorization check
+        $this->authorize('updateCart', $cart);
+
+        return $this->cartRepository->removeProductFromCart($cart->id, $productId);
     }
 
     /**
      * Finalizes the checkout process for the specified user's cart.
      *
-     * This method retrieves the cart associated with the given user ID
-     * and processes the checkout. It returns the updated cart instance.
-     *
      * @param int $userId The ID of the user whose cart is being checked out.
      * @return Cart The updated cart instance after checkout.
-     * @throws ModelNotFoundException If the cart for the specified user does not exist.
      */
     public function checkoutCart(int $userId): Cart
     {
-        // Retrieve and checkout the user's cart
-        $cart = $this->cartRepository->checkout($userId);
+        return $this->cartRepository->checkout($userId);
+    }
 
-        return $cart;
+    /**
+     * Authorizes an action for a given ability and model.
+     *
+     * This method inspects the authorization policy for the specified ability
+     * and model. If the action is not authorized, it throws an AuthorizationException
+     * with the appropriate message.
+     *
+     * @param string $ability The ability being checked (e.g., 'view', 'update').
+     * @param mixed $model The model instance or class name being authorized.
+     *
+     * @throws AuthorizationException If the action is not authorized.
+     *
+     * @return void
+     */
+    protected function authorize(string $ability, $model): void
+    {
+        // Inspect the policy for the given ability and model
+        $response = Gate::inspect($ability, $model);
+
+        // If the action is allowed, return early
+        if ($response->allowed()) {
+            return;
+        }
+
+        // If denied, throw an exception with the policy's message
+        throw new AuthorizationException($response->message());
     }
 }

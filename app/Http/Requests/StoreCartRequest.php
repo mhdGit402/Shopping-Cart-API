@@ -38,9 +38,6 @@ class StoreCartRequest extends FormRequest
         return [
             'user_id.required' => 'The user ID is required.',
             'user_id.exists' => 'The selected user ID is invalid.',
-            'checkout.required' => 'The checkout status is required.',
-            'checkout.integer' => 'The checkout status must be an integer.',
-            'checkout.in' => 'The checkout field must be either 0 or 1.',
         ];
     }
 }
