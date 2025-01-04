@@ -16,12 +16,14 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        // Generate a random stock value
+        $stock = $this->faker->numberBetween(1, 100);
         return [
             'name' => $this->faker->words(3, true),
             'price' => $this->faker->randomFloat(2, 10, 100),
             'description' => $this->faker->realText(200),
-            'quantity' => $this->faker->numberBetween(1, 100),
-            // 'sku' => $this->faker->unique()->numerify('ABC###'),
+            'stock' => $stock,
+            'quantity' => $this->faker->numberBetween(1, $stock),
             'image' => $this->faker->imageUrl(640, 480, 'technics'), // Generates a random image URL
         ];
     }

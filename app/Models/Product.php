@@ -19,9 +19,9 @@ class Product extends Model
         'name',
         'price',
         'description',
+        'stock',
         'quantity',
         'image',
-        // 'sku' // Uncomment if SKU is to be included in mass assignment
     ];
 
     /**

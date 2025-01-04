@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
+use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCartProductRequest extends FormRequest
@@ -14,6 +16,20 @@ class StoreCartProductRequest extends FormRequest
     public function authorize(): bool
     {
         return true; // Allow all users to make this request
+    }
+
+    protected function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            $productId = $this->input('product_id');
+            $quantityRequested = $this->input('quantity');
+            $product = Product::find($productId);
+            if ($product) {
+                if ($quantityRequested > $product->stock) {
+                    $validator->errors()->add('quantity', 'The requested quantity exceeds the available stock.');
+                }
+            }
+        });
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Repositories\Cart;
 use App\Models\Cart;
 use App\Models\CartProduct;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 
 
 interface CartRepositoryInterface
@@ -38,9 +39,9 @@ interface CartRepositoryInterface
      * @param int $userId
      * @param int $productId
      * @param int $quantity
-     * @return CartProduct
+     * @return CartProduct|JsonResponse
      */
-    public function addProductToCart(int $userId, int $productId, int $quantity): CartProduct;
+    public function addProductToCart(int $userId, int $productId, int $quantity): CartProduct|JsonResponse;
 
     /**
      * Remove a product from the user's cart.

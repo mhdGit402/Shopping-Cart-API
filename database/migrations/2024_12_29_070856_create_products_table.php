@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name'); // Product name
             $table->decimal('price', 10, 2); // Product price
             $table->text('description')->nullable(); // Product description
-            $table->unsignedInteger('quantity'); // Available quantity
-            // $table->string('sku')->unique(); // Stock Keeping Unit
+            $table->unsignedInteger('stock'); // Available stock
+            $table->unsignedInteger('quantity')->default(0);; // Available quantity
             $table->string('image')->nullable(); // URL or path to product image
             $table->timestamps(); // Created at and updated at timestamps
         });

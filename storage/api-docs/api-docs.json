@@ -359,7 +359,7 @@
                         "format": "float",
                         "example": 99.99
                     },
-                    "quantity": {
+                    "stock": {
                         "type": "number",
                         "format": "integer",
                         "example": 10
